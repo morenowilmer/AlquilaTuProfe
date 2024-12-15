@@ -1,0 +1,42 @@
+.login {
+  // padding: 3rem 5rem;
+  padding: 3% 5%;
+  height: 85vh;
+}
+
+.columna {
+  margin: 0 0 45px 0;
+}
+
+.columna img {
+  max-width: calc(100% - 30%);
+}
+
+img.cover {
+  object-fit: cover;
+}
+
+.ancho-total {
+  width: 100%;
+}
+
+.ancho-btn {
+  width: 80%;
+}
+
+.transformacion-texto {
+  text-transform: uppercase;
+}
+
+.input-contrasena {
+  text-transform: none;
+}
+
+re-captcha.is-invalid > div {
+  border: 1px solid #dc3545 !important;
+  border-radius: 0.2rem;
+}
+
+.margen-captcha {
+  margin: 0 0 40px 0;
+}
