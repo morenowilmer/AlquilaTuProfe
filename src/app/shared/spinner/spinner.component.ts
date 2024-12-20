@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
+import { LOGO_SPINNER } from 'src/app/login/data/consts/logo-spinner.const';
 
 @Component({
   selector: 'app-spinner',
@@ -10,9 +11,8 @@ export class SpinnerComponent {
   logo: any;
 
   constructor(private sanitizer: DomSanitizer) {
-    const logoMini = localStorage.getItem('logoMini');
     this.logo = this.sanitizer.bypassSecurityTrustResourceUrl(
-      `data:image/png;base64, ${logoMini}`
+      `data:image/png;base64, ${LOGO_SPINNER}`
     );
   }
 }

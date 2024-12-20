@@ -1,1 +1,138 @@
-<p>siderbar works!</p>
+<div
+  class="layout-wrapper"
+  [ngClass]="{
+    'layout-wrapper-static': mainComponent.layoutMode === 'static',
+    'layout-wrapper-active': mainComponent.mobileMenuActive,
+    'layout-menu-horizontal': mainComponent.layoutMode === 'horizontal',
+    'layout-rtl': mainComponent.isRTL
+  }"
+  (click)="mainComponent.onSidebarClick($event)"
+>
+  <app-spinner *ngIf="loading"></app-spinner>
+  <div
+    class="layout-sidebar"
+    [ngClass]="{
+      'layout-sidebar-active': mainComponent.sidebarActive,
+      'layout-sidebar-dark': mainComponent.darkMenu
+    }"
+    (click)="mainComponent.onSidebarClick($event)"
+    (mouseover)="mainComponent.sidebarActive = !mainComponent.isMobile()"
+    (mouseleave)="mainComponent.sidebarActive = false"
+  >
+    <div class="sidebar-logo">
+      <a href="#">
+        <img alt="logo" [src]="logo" />
+      </a>
+      <div class="info-persona">
+        <p>{{ nombrePersonaLogueada }}</p>
+        <p>
+          <small>{{ rol }} - {{ mainComponent.sidebarActive }}</small>
+        </p>
+      </div>
+      <div class="boton-toogle-mobile">
+        <p>
+          <mat-icon (click)="mainComponent.cerrarMenu()">close</mat-icon>
+        </p>
+      </div>
+    </div>
+
+    <ul class="layout-menu" (click)="mainComponent.onMenuClick()">
+      <ng-container *ngFor="let item of inItemsMenu; let i = index">
+        <!-- <li app-menuitem [item]="item" [index]="i" [root]="false"></li> -->
+      </ng-container>
+    </ul>
+  </div>
+
+
+  <div class="layout-topbar">
+    <div class="topbar-logoapp">
+      <a>
+        <img alt="logo" [src]="logo" />
+      </a>
+      <div class="boton-toogle">
+        <p>
+          <mat-icon (click)="mainComponent.onToggleMenuClick($event)"
+            >chevron_right</mat-icon
+          >
+        </p>
+      </div>
+
+      <div class="layout-topbar--separator"></div>
+      <div class="layout-topbar-nombreempleado">
+        <mat-icon>person</mat-icon>
+        <p>
+          <small>{{ nombrePersonaLogueada | uppercase }}</small>
+        </p>
+      </div>
+    </div>
+    <div class="container-logo-mobil">
+      <a
+        routerLink="/"
+        *ngIf="mainComponent.isHorizontal() && !mainComponent.isMobile()"
+        class="topbar-logo"
+      >
+        <img alt="logo" [src]="logo" />
+      </a>
+
+      <img alt="logo" [src]="logo" class="mobile-logo" />
+
+      <a
+        href="#"
+        class="menu-btn"
+        (click)="mainComponent.onMenuButtonClick($event)"
+      >
+        <mat-icon>menu</mat-icon>
+      </a>
+
+
+    </div>
+    <div class="layout-topbar-menu-wrapper">
+      <ul
+        [ngClass]="{ 'topbar-menu-active': mainComponent.topbarMenuActive }"
+        (click)="mainComponent.onTopbarMenuClick($event)"
+      >
+        <li
+          #logout
+          [ngClass]="{
+            'active-topmenuitem': mainComponent.activeTopbarItem === logout
+          }"
+          (click)="mainComponent.onTopbarRootItemClick($event, logout)"
+        >
+          <div (click)="onLogout()" class="logout">
+            <div>
+              <mat-icon>logout</mat-icon>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="layout-main">
+    <div class="layout-breadcrumb">
+      <ul>
+          <li><a routerLink=""><mat-icon>home</mat-icon></a></li>
+          <li>/</li>
+          <ng-template ngFor let-item let-last="last" [ngForOf]="items">
+              <li>
+                  <a [routerLink]="item.routerLink" *ngIf="item.routerLink"><small>{{item.label}}</small></a>
+                  <ng-container *ngIf="!item.routerLink"><small>{{item.label}}</small></ng-container>
+              </li>
+              <li *ngIf="!last">/</li>
+          </ng-template>
+      </ul>
+  
+      <div class="layout-breadcrumb-options">
+         <div></div>
+      </div>
+  </div>
+    <div class="layout-content">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+  <div
+    class="layout-main-mask"
+    (click)="mainComponent.cerrarMenu()"
+    *ngIf="mainComponent.mobileMenuActive"
+  ></div>
+</div>

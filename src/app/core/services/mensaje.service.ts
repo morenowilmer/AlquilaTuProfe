@@ -23,7 +23,7 @@ export class MensajeService {
 
   openSnackBar(mensaje: string, tipoMensaje: string, tiempo: number = 5) {
     this._snackBar.open(mensaje, tipoMensaje, {
-      horizontalPosition: 'end',
+      horizontalPosition: 'right',
       verticalPosition: 'top',
       duration: tiempo * 1000,
       

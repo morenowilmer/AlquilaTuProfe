@@ -1,6 +1,6 @@
-.login {
+.registro {
   padding: 3% 5%;
-  height: 94vh;
+  // height: 94vh;
   background-color: #7cb5c7;
 }
 
@@ -12,10 +12,10 @@
   max-width: calc(100% - 50%);
 }
 
-img.cover {
-  object-fit: cover;
+img {
+  width: 30%;
+  height: 25%;
 }
-
 .ancho-total {
   width: 100%;
 }
@@ -30,4 +30,12 @@ img.cover {
 
 .input-contrasena {
   text-transform: none;
+}
+
+.file-name {
+  margin-left: 1rem;
+}
+
+.centrar {
+  text-align: center;
 }

@@ -8,15 +8,25 @@ export class LoginService {
 
   constructor(private http: HttpClient) { }
 
-  login(userLogin: any): Observable<any> {
-    return this.http.post<any>(environment.api_url + 'login/login', userLogin)
-  } 
+  login(correo: string, contrasena: string): Observable<any> {
+    var userLogin = {
+      correo: correo,
+      contrasena: contrasena
+    }
 
-  estaLogeado(){
+    return this.http.post<any>(environment.api_url + 'login/login', userLogin);
+  }
+
+  logout() {
+    return this.http.put<any>(environment.api_url + 'login/cerrar-sesion', null);
+  }
+
+  public estaLogeado(){
     return (this.obtenerUuid());
   }
 
   obtenerUuid() {
-    return localStorage.getItem('uuid');
+    return localStorage.getItem('token');
   }
 }
+

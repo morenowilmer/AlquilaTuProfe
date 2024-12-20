@@ -4,14 +4,17 @@ import { LayoutComponent } from './siderbar/layout/layout.component';
 import { NotFountComponent } from './not-fount/not-fount.component';
 
 const routes: Routes = [
-  {path: '', redirectTo: 'login', pathMatch: 'full'},
-  { path: '**', redirectTo: 'login' },
-  { path: '404', component: NotFountComponent },
+  { path: '', redirectTo: 'login', pathMatch: 'full' },
   {
     path: 'login',
     loadChildren: () =>
-      import('./login/login.module').then(
-        (module) => module.LoginModule
+      import('./login/login.module').then((module) => module.LoginModule),
+  },
+  {
+    path: 'registrar',
+    loadChildren: () =>
+      import('./registro/registro.module').then(
+        (module) => module.RegistroModule
       ),
   },
   {
@@ -21,16 +24,16 @@ const routes: Routes = [
       {
         path: 'home',
         loadChildren: () =>
-          import('./login/login.module').then(
-            (module) => module.LoginModule
-          ),
-      }
-    ]
+          import('./home/home.module').then((module) => module.HomeModule),
+      },
+    ],
   },
+  { path: '**', redirectTo: 'login' },
+  { path: '404', component: NotFountComponent },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

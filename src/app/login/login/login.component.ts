@@ -41,14 +41,13 @@ export class LoginComponent implements OnInit {
     this.logo = this.sanitizer.bypassSecurityTrustResourceUrl(
       `data:image/png;base64, ${LOGO}`
     );
+    this.redireccionamiento();
   }
 
-  private redireccionamiento(parametro: string) {
-    if (this.loginService.estaLogeado()) {
-      this.router.navigateByUrl('app/home');
-    } else {
-      this.router.navigateByUrl('404');
-    }
+  private redireccionamiento() {
+    // if (this.loginService.estaLogeado()) {
+    //   this.router.navigateByUrl('app/home');
+    // }
   }
 
   private cargarFormulario() {
@@ -92,47 +91,35 @@ export class LoginComponent implements OnInit {
   }
 
   login() {
-    // if (this.formularioLogin.valid) {
-    //   // this.loading = true;
-    //   // this.loginService
-    //   //   .login(
-    //   //     this.formularioLogin.controls['usuario'].value.toUpperCase(),
-    //   //     this.formularioLogin.controls['contrasena'].value
-    //   //   )
-    //   //   .subscribe({
-    //   //     next: async (resp) => {
-    //   //       this.loading = false;
-    //   //       this.mensajeService.enviarMensaje({
-    //   //         mensaje: resp?.mensaje,
-    //   //         tipo: resp?.codigo,
-    //   //       });
+    if (this.formularioLogin.valid) {
+      this.loading = true;
+      this.loginService
+        .login(
+          this.formularioLogin.controls['usuario'].value.toUpperCase(),
+          this.formularioLogin.controls['contrasena'].value
+        )
+        .subscribe({
+          next: async (resp) => {
+            this.loading = false;
+            this.mensajeService.enviarMensaje({
+              mensaje: resp?.mensaje,
+              tipo: resp?.codigo,
+            });
+            localStorage.setItem('usuarioSesion', JSON.stringify(resp?.respuesta));
+            localStorage.setItem('token', resp?.respuesta.token)
 
-    //   //       setTimeout(() => {
-    //   //         this.permisosAcciones
-    //   //           .traerTodosPermisosLogin(
-    //   //             resp.respuesta.rol,
-    //   //             '123bc58f-1354-4bea-a4d9-ef2cd99450f0'
-    //   //           )
-    //   //           .pipe(
-    //   //             tap((res) => {
-    //   //               localStorage.setItem('permisos', JSON.stringify(res));
-    //   //             })
-    //   //           )
-    //   //           .subscribe();
-    //   //       }, 100);
-    //   //       await this.router.navigateByUrl('app');
-    //   //     },
-    //   //     error: (err) => {
-    //   //       this.loading = false;
-    //   //       this.mensajeService.enviarMensaje({
-    //   //         mensaje: err?.error?.mensaje,
-    //   //         tipo: err?.error?.codigo,
-    //   //       });
-    //   //     },
-    //   //   });
-    // }
-    this.router.navigateByUrl('app/home');
-    console.log("🚀 ~ LoginComponent ~ login ~ this.router.navigateByUrl:", this.router.navigateByUrl)
+            await this.router.navigateByUrl('app/home');
+          },
+          error: (err) => {
+            this.loading = false;
+            this.mensajeService.enviarMensaje({
+              mensaje: err?.error?.mensaje,
+              tipo: err?.error?.codigo,
+            });
+          },
+        });
+    }
+    // this.router.navigateByUrl('app/home');
   }
 
   public revisarRN(controlador: string): string {

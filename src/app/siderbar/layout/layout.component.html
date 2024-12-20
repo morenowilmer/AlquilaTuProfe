@@ -1,1 +1,11 @@
-<p>layout works!</p>
+<div fxLayout="column" fxFill>
+    <app-siderbar
+      fxFill
+      [nombrePersonaLogueada] = "nombrePersonaLogueada"
+      [inItemsMenu]="itemsMenu$()"
+      [inItemsSubMenu]="itemsSubMenu$() "
+      [inIsAuthenticated]="isAuthenticated"
+      (outLogout)="onLogout($event)"
+    ></app-siderbar>
+  </div>
+  
