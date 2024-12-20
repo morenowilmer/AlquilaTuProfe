@@ -32,6 +32,7 @@ import { ItemMenu } from 'src/app/core/model/tipo-usuario.model';
 import { AppBreadcrumbService } from '../services/app.breadcrumb.service';
 import { DashboardService } from '../services/dashboard.service';
 import { EstadosGlobalesService } from 'src/app/core/services/estados-globales.service';
+import { LOGO_SPINNER } from 'src/app/login/data/consts/logo-spinner.const';
   
   @Component({
     selector: 'app-siderbar',
@@ -107,7 +108,7 @@ import { EstadosGlobalesService } from 'src/app/core/services/estados-globales.s
     ) {
       // this.consultarAcciones();
       this.mediaQuery();
-      const logoInicio = localStorage.getItem('logoInicio');
+      const logoInicio = LOGO_SPINNER;
       this.logo = this.sanitizer.bypassSecurityTrustResourceUrl(
         `data:image/png;base64, ${logoInicio}`
       );
