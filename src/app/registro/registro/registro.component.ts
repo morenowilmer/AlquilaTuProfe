@@ -7,6 +7,8 @@ import { LoginService } from '../../login/data/services/login.service';
 import { RegistroService } from '../data/services/registro.service';
 import { TipoDocumento } from 'src/app/core/interface/tipo-documento.interface';
 import { TipoNotificacion } from 'src/app/core/model/tipo-notificacion';
+import { MatDatepickerIntl } from '@angular/material/datepicker';
+import { Usuario } from 'src/app/core/interface/persona.interface';
 
 @Component({
   selector: 'app-registro',
@@ -35,7 +37,7 @@ export class RegistroComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // this.redireccionamiento();
+    this.redireccionamiento();
     this.consultarTiposDocumentos();
   }
 
@@ -91,7 +93,6 @@ export class RegistroComponent implements OnInit {
   }
 
   registrar() {
-    console.log(this.formularioRegistro);
     if (this.formularioRegistro.valid) {
       if (this.formularioRegistro.controls['contrasena'].value !== this.formularioRegistro.controls['repetirContrasena'].value) {
         this.mensajeService.enviarMensaje({
@@ -101,7 +102,7 @@ export class RegistroComponent implements OnInit {
         return;
       }
 
-      const usuario = {
+      const usuario: Usuario = {
         id: null,
         nombre: this.formularioRegistro.controls['nombre'].value,
         apellido: this.formularioRegistro.controls['apellido'].value,
@@ -116,28 +117,27 @@ export class RegistroComponent implements OnInit {
         contrasena: this.formularioRegistro.controls['contrasena'].value,
         fotoBase64: this.fotoPersonaBase64,
       };
-      console.log(usuario);
-      // this.loading = true;
-      // this.registroService.registrar(usuario)
-      //   .subscribe({
-      //     next: async (resp) => {
-      //       this.loading = false;
-      //       this.mensajeService.enviarMensaje({
-      //         mensaje: resp?.mensaje,
-      //         tipo: resp?.codigo,
-      //       });
-      //       if (resp?.codigo === 'success') {
-      //         this.router.navigateByUrl('login');
-      //       }
-      //     },
-      //     error: (err) => {
-      //       this.loading = false;
-      //       this.mensajeService.enviarMensaje({
-      //         mensaje: err?.error?.mensaje,
-      //         tipo: err?.error?.codigo,
-      //       });
-      //     },
-      //   });
+      this.loading = true;
+      this.registroService.registrar(usuario)
+        .subscribe({
+          next: async (resp) => {
+            this.loading = false;
+            this.mensajeService.enviarMensaje({
+              mensaje: resp?.mensaje,
+              tipo: resp?.codigo,
+            });
+            if (resp?.codigo === TipoNotificacion.exito) {
+              this.router.navigateByUrl('login');
+            }
+          },
+          error: (err) => {
+            this.loading = false;
+            this.mensajeService.enviarMensaje({
+              mensaje: err?.error?.mensaje,
+              tipo: err?.error?.codigo,
+            });
+          },
+        });
     }
   }
 
