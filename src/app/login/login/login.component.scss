@@ -1,0 +1,33 @@
+.login {
+  padding: 3% 5%;
+  height: 94vh;
+  background-color: #7cb5c7;
+}
+
+.columna {
+  margin: 0 0 45px 0;
+}
+
+.columna img {
+  max-width: calc(100% - 50%);
+}
+
+img.cover {
+  object-fit: cover;
+}
+
+.ancho-total {
+  width: 100%;
+}
+
+.ancho-btn {
+  width: 80%;
+}
+
+.transformacion-texto {
+  text-transform: uppercase;
+}
+
+.input-contrasena {
+  text-transform: none;
+}
