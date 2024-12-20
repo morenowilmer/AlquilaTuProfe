@@ -4,7 +4,7 @@ export interface Usuario {
     id: number | null;
     nombre: string;
     apellido: string;
-    tipoDocumento: TipoDocumento;
+    tipoDocumento: TipoDocumento | undefined;
     identificacion: string;
     celular: string;
     correo: string;

@@ -30,7 +30,7 @@
                     <mat-label>Tipo de documento</mat-label>
                     <mat-select formControlName="tipoDocumentoUsuario">
                       <mat-option *ngFor="let tipoDocumento of tiposDocumento" 
-                      [value]="tipoDocumento.id">
+                      [value]="tipoDocumento">
                         {{tipoDocumento.nombre}}
                       </mat-option>
                     </mat-select>
@@ -144,6 +144,10 @@
                         {{revisarRN('repetirContrasena')}}
                     </mat-error>
                 </mat-form-field>
+                <mat-menu><span>Ir a </span>
+                    <a [routerLink]="['/login']" mat-menu-item>login</a>
+                </mat-menu>
+                <br>
                 <div class="ancho-btn">
                     <button fxFlex mat-raised-button type="submit" class="boton-aceptacion">
                       Registrar

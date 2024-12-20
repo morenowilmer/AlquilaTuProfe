@@ -11,7 +11,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatNativeDateModule } from '@angular/material/core';
+import { MAT_DATE_LOCALE, MatNativeDateModule } from '@angular/material/core';
 import { RegistroService } from './data/services/registro.service';
 import { RouterModule } from '@angular/router';
 import { RegistroRoutingModule } from './registro-routing.module';
@@ -36,7 +36,9 @@ import { LoginService } from '../login/data/services/login.service';
     MatNativeDateModule,
     RegistroRoutingModule
   ],
-  providers: [RegistroService, LoginService],
+  providers: [RegistroService, LoginService,
+    {provide: MAT_DATE_LOCALE, useValue: 'es-CO'},
+  ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class RegistroModule { }
