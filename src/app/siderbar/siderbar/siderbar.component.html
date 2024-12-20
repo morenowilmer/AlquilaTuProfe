@@ -21,7 +21,7 @@
   >
     <div class="sidebar-logo">
       <a href="#">
-        <img alt="logo" [src]="logo" />
+        <img style="height: 100%;" alt="logo" [src]="logo" />
       </a>
       <div class="info-persona">
         <p>{{ nombrePersonaLogueada }}</p>
@@ -47,7 +47,7 @@
   <div class="layout-topbar">
     <div class="topbar-logoapp">
       <a>
-        <img alt="logo" [src]="logo" />
+        <img style="height: 100%;" alt="logo" [src]="logo" />
       </a>
       <div class="boton-toogle">
         <p>
@@ -109,23 +109,6 @@
   </div>
 
   <div class="layout-main">
-    <div class="layout-breadcrumb">
-      <ul>
-          <li><a routerLink=""><mat-icon>home</mat-icon></a></li>
-          <li>/</li>
-          <ng-template ngFor let-item let-last="last" [ngForOf]="items">
-              <li>
-                  <a [routerLink]="item.routerLink" *ngIf="item.routerLink"><small>{{item.label}}</small></a>
-                  <ng-container *ngIf="!item.routerLink"><small>{{item.label}}</small></ng-container>
-              </li>
-              <li *ngIf="!last">/</li>
-          </ng-template>
-      </ul>
-  
-      <div class="layout-breadcrumb-options">
-         <div></div>
-      </div>
-  </div>
     <div class="layout-content">
       <router-outlet></router-outlet>
     </div>

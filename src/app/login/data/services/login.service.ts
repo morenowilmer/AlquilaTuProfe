@@ -6,6 +6,8 @@ import { environment } from 'src/environments/environment';
 @Injectable()
 export class LoginService {
 
+  private urlBase = environment.api_url;
+
   constructor(private http: HttpClient) { }
 
   login(correo: string, contrasena: string): Observable<any> {
@@ -14,11 +16,11 @@ export class LoginService {
       contrasena: contrasena
     }
 
-    return this.http.post<any>(environment.api_url + 'login/login', userLogin);
+    return this.http.post<any>(this.urlBase + 'login/login', userLogin);
   }
 
   logout() {
-    return this.http.put<any>(environment.api_url + 'login/cerrar-sesion', null);
+    return this.http.put<any>(this.urlBase + 'login/cerrar-sesion', null);
   }
 
   public estaLogeado(){
