@@ -9,7 +9,7 @@
   (click)="mainComponent.onSidebarClick($event)"
 >
   <app-spinner *ngIf="loading"></app-spinner>
-  <div
+  <!-- <div
     class="layout-sidebar"
     [ngClass]="{
       'layout-sidebar-active': mainComponent.sidebarActive,
@@ -38,10 +38,10 @@
 
     <ul class="layout-menu" (click)="mainComponent.onMenuClick()">
       <ng-container *ngFor="let item of inItemsMenu; let i = index">
-        <!-- <li app-menuitem [item]="item" [index]="i" [root]="false"></li> -->
+        <li app-menuitem [item]="item" [index]="i" [root]="false"></li>
       </ng-container>
     </ul>
-  </div>
+  </div> -->
 
 
   <div class="layout-topbar">
@@ -49,15 +49,15 @@
       <a>
         <img style="height: 100%;" alt="logo" [src]="logo" />
       </a>
-      <div class="boton-toogle">
+      <!-- <div class="boton-toogle">
         <p>
           <mat-icon (click)="mainComponent.onToggleMenuClick($event)"
             >chevron_right</mat-icon
           >
         </p>
-      </div>
+      </div> -->
 
-      <div class="layout-topbar--separator"></div>
+      <div class="layout-topbar--separator separador"></div>
       <div class="layout-topbar-nombreempleado">
         <mat-icon>person</mat-icon>
         <p>
@@ -83,8 +83,18 @@
       >
         <mat-icon>menu</mat-icon>
       </a>
-
-
+    </div>
+    <div>
+      <button class="text-menu" mat-button [matMenuTriggerFor]="profesor">Profesor</button>
+      <mat-menu #profesor="matMenu">
+        <button mat-menu-item routerLink="/app/crear-curso">Crear curso</button>
+        <button mat-menu-item>Ver cursos creados</button>
+      </mat-menu>
+      <button class="text-menu" mat-button [matMenuTriggerFor]="estudiante">Estudiante</button>
+      <mat-menu #estudiante="matMenu">
+        <button mat-menu-item routerLink="/login">Crear curso</button>
+        <button mat-menu-item>Ver cursos creados</button>
+      </mat-menu>
     </div>
     <div class="layout-topbar-menu-wrapper">
       <ul
@@ -113,9 +123,9 @@
       <router-outlet></router-outlet>
     </div>
   </div>
-  <div
+  <!-- <div
     class="layout-main-mask"
     (click)="mainComponent.cerrarMenu()"
     *ngIf="mainComponent.mobileMenuActive"
-  ></div>
+  ></div> -->
 </div>

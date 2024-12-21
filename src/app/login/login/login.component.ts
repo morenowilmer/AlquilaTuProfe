@@ -16,9 +16,8 @@ export class LoginComponent implements OnInit {
   public formularioLogin!: FormGroup;
 
   tipoInput = 'password';
-
   loading = false;
-
+  
   logo: any;
 
   constructor(
@@ -34,10 +33,6 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // this.activatedRoute.paramMap.subscribe((params) => {
-    //   const parametro = params.get('main')?.toLowerCase();
-    //   this.redireccionamiento(parametro as string);
-    // });
     this.logo = this.sanitizer.bypassSecurityTrustResourceUrl(
       `data:image/png;base64, ${LOGO}`
     );
@@ -45,9 +40,9 @@ export class LoginComponent implements OnInit {
   }
 
   private redireccionamiento() {
-    // if (this.loginService.estaLogeado()) {
-    //   this.router.navigateByUrl('app/home');
-    // }
+    if (this.loginService.obtenerUuid()) {
+      this.router.navigateByUrl('app/home');
+    }
   }
 
   private cargarFormulario() {
@@ -58,12 +53,10 @@ export class LoginComponent implements OnInit {
         ValidacionFormularioService.REGEXPS.ONLY_EMAIL
       ),
     ];
-    // const validacionCaptcha = [Validators.required];
     this.formularioLogin = this.fb.group({
       usuario: ['', validacion],
       contrasena: ['', [Validators.required, Validators.minLength(4)]],
       captcha: [null],
-      // captcha: [ null, validacionCaptcha],
     });
   }
 
@@ -119,7 +112,6 @@ export class LoginComponent implements OnInit {
           },
         });
     }
-    // this.router.navigateByUrl('app/home');
   }
 
   public revisarRN(controlador: string): string {

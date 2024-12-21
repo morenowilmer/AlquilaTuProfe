@@ -7,17 +7,18 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NotFountComponent } from './not-fount/not-fount.component';
 import { CoreModule } from './core/core.module';
 import { SharedModule } from './shared/shared.module';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { ToastrModule } from 'ngx-toastr';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { LoginService } from './login/data/services/login.service';
 import { SiderbarModule } from './siderbar/siderbar.module';
+import { LoginInterceptor } from './login/login/login.interceptor';
 
 @NgModule({
   declarations: [
     AppComponent,
-    NotFountComponent
+    NotFountComponent,
   ],
   imports: [
     BrowserModule,
@@ -31,7 +32,10 @@ import { SiderbarModule } from './siderbar/siderbar.module';
     MatNativeDateModule,
     AppRoutingModule,
   ],
-  providers: [LoginService],
+  providers: [
+    LoginService,
+    { provide: HTTP_INTERCEPTORS, useClass: LoginInterceptor, multi: true }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

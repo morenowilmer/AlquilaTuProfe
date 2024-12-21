@@ -1,0 +1,129 @@
+<div fxLayoutAlign="center center" style="margin: 1rem 0rem;">
+    <mat-card [class.mat-elevation-z8]="true" class="registro" fxFlex="40%" fxFlex.lt-md="90%">
+
+    </mat-card>
+    <mat-card [class.mat-elevation-z8]="true" class="registroCurso" fxFlex="40%" fxFlex.lt-md="90%">
+        <h1 class="centrar">Registro curso</h1>
+        <form fxFlex [formGroup]="formularioRegistroCurso" (ngSubmit)="registrarCurso()">
+            <div fxFlex fxLayout="column" fxLayoutAlign="space-between center">
+                <mat-form-field class="ancho-total">
+                    <mat-label>Categoría</mat-label>
+                    <mat-select formControlName="categoriaPadre">
+                      <mat-option *ngFor="let categoriaPadre of categoriasPadre" 
+                      [value]="categoriaPadre.id">
+                        {{categoriaPadre.nombre}}
+                      </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="
+                        this.formularioRegistroCurso.get('categoriaPadre')?.touched &&
+                        this.formularioRegistroCurso.get('categoriaPadre')?.invalid">
+                        {{ revisarRN('categoriaPadre') }}
+                    </mat-error>
+                </mat-form-field> 
+<!-- 
+                <mat-form-field appearance="fill" class="ancho-total">
+                    <mat-label>Nombre</mat-label>
+                    <input matInput formControlName="nombre" required>
+                    <mat-error *ngIf="
+                        this.formularioRegistroCurso.get('nombre')?.touched &&
+                        this.formularioRegistroCurso.get('nombre')?.invalid">
+                        {{ revisarRN('nombre') }}
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="fill" class="ancho-total">
+                    <mat-label>Apellido</mat-label>
+                    <input matInput formControlName="apellido" required>
+                    <mat-error *ngIf="
+                        this.formularioRegistroCurso.get('apellido')?.touched &&
+                        this.formularioRegistroCurso.get('apellido')?.invalid">
+                        {{ revisarRN('apellido') }}
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="fill" class="ancho-total">
+                    <mat-label>Identificación</mat-label>
+                    <input matInput formControlName="identificacion" required>
+                    <mat-error *ngIf="
+                        this.formularioRegistroCurso.get('identificacion')?.touched &&
+                        this.formularioRegistroCurso.get('identificacion')?.invalid">
+                        {{ revisarRN('identificacion') }}
+                    </mat-error>
+                </mat-form-field>
+                  
+                <mat-form-field appearance="fill" class="ancho-total">
+                    <mat-label>Correo</mat-label>
+                    <input matInput formControlName="correo" class="transformacion-texto">
+                    <mat-error *ngIf="
+                        this.formularioRegistroCurso.get('correo')?.touched &&
+                        this.formularioRegistroCurso.get('correo')?.invalid">
+                        {{ revisarRN('correo') }}
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="fill" class="ancho-total">
+                    <mat-label>Celular</mat-label>
+                    <input matInput formControlName="celular" required>
+                    <mat-error *ngIf="
+                        this.formularioRegistroCurso.get('celular')?.touched &&
+                        this.formularioRegistroCurso.get('celular')?.invalid">
+                        {{ revisarRN('celular') }}
+                    </mat-error>
+                </mat-form-field>
+                  
+                <mat-form-field appearance="fill" class="ancho-total">
+                    <mat-label>Fecha de Nacimiento</mat-label>
+                    <input matInput [matDatepicker]="picker" formControlName="fechaNacimiento" required>
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                    <mat-error *ngIf="
+                        this.formularioRegistroCurso.get('fechaNacimiento')?.touched &&
+                        this.formularioRegistroCurso.get('fechaNacimiento')?.invalid">
+                        {{ revisarRN('fechaNacimiento') }}
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="fill" class="ancho-total">
+                    <mat-label>Departamento</mat-label>
+                    <input matInput formControlName="departamento" required>
+                    <mat-error *ngIf="
+                        this.formularioRegistroCurso.get('departamento')?.touched &&
+                        this.formularioRegistroCurso.get('departamento')?.invalid">
+                        {{ revisarRN('departamento') }}
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="fill" class="ancho-total">
+                    <mat-label>Ciudad</mat-label>
+                    <input matInput formControlName="ciudad" required>
+                    <mat-error *ngIf="
+                        this.formularioRegistroCurso.get('ciudad')?.touched &&
+                        this.formularioRegistroCurso.get('ciudad')?.invalid">
+                        {{ revisarRN('ciudad') }}
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="fill" class="ancho-total">
+                    <mat-label>Dirección</mat-label>
+                    <input matInput formControlName="direccion" required>
+                    <mat-error *ngIf="
+                        this.formularioRegistroCurso.get('direccion')?.touched &&
+                        this.formularioRegistroCurso.get('direccion')?.invalid">
+                        {{ revisarRN('direccion') }}
+                    </mat-error>
+                </mat-form-field>
+                  
+                <button type="button" mat-raised-button (click)="fileInput.click()">Cargar Foto</button>
+                <input hidden (change)="onFileSelected($event)" #fileInput type="file">
+                <br>
+                <img [src]="fotoPersonaBase64" *ngIf="fotoPersonaBase64" alt="foto"> -->
+
+                <div class="ancho-btn">
+                    <button fxFlex mat-raised-button type="submit" class="boton-aceptacion">
+                      Registrar
+                    </button>
+                </div>
+            </div>
+        </form>
+    </mat-card>
+</div>
