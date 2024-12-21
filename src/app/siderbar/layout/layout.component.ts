@@ -6,6 +6,7 @@ import Swal from 'sweetalert2';
 import { map } from 'rxjs/operators';
 import { fromEvent, merge, of, Subscription } from 'rxjs';
 import { MensajeService } from 'src/app/core/services/mensaje.service';
+import { EstadosGlobalesService } from 'src/app/core/services/estados-globales.service';
 
 @Component({
   selector: 'app-layout',
@@ -22,7 +23,6 @@ export class LayoutComponent implements OnInit, OnDestroy, AfterViewChecked {
   private paginaInicio = document.querySelector('body');
 
   private usuario = '';
-  // status!: string;
 
   networkStatus: any;
   networkStatus$: Subscription = Subscription.EMPTY;
@@ -35,10 +35,19 @@ export class LayoutComponent implements OnInit, OnDestroy, AfterViewChecked {
 
   constructor(
     private router: Router,
-    private LoginService: LoginService,
+    private mensajeService: MensajeService,
+    private loginService: LoginService,
+    private estadosGlobalesService: EstadosGlobalesService,
     private readonly changeDetectorRef: ChangeDetectorRef,
-  )
-  {}
+  ) {
+    this.redireccionamiento();
+  }
+
+  private redireccionamiento() {
+    if (!this.loginService.obtenerUuid()) {
+      this.router.navigateByUrl('login');
+    }
+  }
 
   ngAfterViewChecked(): void {
     this.changeDetectorRef.detectChanges();
@@ -58,8 +67,7 @@ export class LayoutComponent implements OnInit, OnDestroy, AfterViewChecked {
   }
 
   datosBasicos() {
-    // Obtener token
-    const token = this.LoginService.obtenerUuid();
+    const token = this.loginService.obtenerUuid();
     if (token) this.token = token;
   }
 
@@ -104,27 +112,30 @@ export class LayoutComponent implements OnInit, OnDestroy, AfterViewChecked {
         reverseButtons: true,
       }).then((result) => {
         if (result.isConfirmed) {
-          if (this.networkStatus) {
-            // this.eliminarCaches();
-          }
-          this.LoginService.logout();
-          window.location.reload();
+          this.estadosGlobalesService.setSpinner(true);
+          this.loginService.logout()
+          .subscribe({
+            next: async (resp) => {
+              this.estadosGlobalesService.setSpinner(false);
+              this.mensajeService.enviarMensaje({
+                mensaje: resp?.mensaje,
+                tipo: resp?.codigo,
+              });
+              localStorage.removeItem('usuarioSesion');
+              localStorage.removeItem('token')
+  
+              window.location.reload();
+            },
+            error: (err) => {
+              this.estadosGlobalesService.setSpinner(false);
+              this.mensajeService.enviarMensaje({
+                mensaje: err?.error?.mensaje,
+                tipo: err?.error?.codigo,
+              });
+            },
+          });
         }
       });
     }
   }
-
-  // async eliminarCaches(): Promise<Promise<boolean>[][]> {
-  //   const cacheKeys = await caches?.keys();
-  //   return await Promise.all( 
-  //     cacheKeys.map(cacheKey => {
-  //       const ngswRegex = /^(ngsw).*/;
-  //       if (ngswRegex.test(cacheKey)) {
-  //         return caches
-  //           .open(cacheKey)
-  //           .then(cache => cache.keys().then(requests => requests.map(req => cache.delete(req))));
-  //       }
-  //     })
-  //   ) as any;
-  // }
 }

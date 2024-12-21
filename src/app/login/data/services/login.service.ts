@@ -19,12 +19,12 @@ export class LoginService {
     return this.http.post<any>(this.urlBase + 'login/login', userLogin);
   }
 
-  logout() {
-    return this.http.put<any>(this.urlBase + 'login/cerrar-sesion', null);
+  logout(): Observable<any> {
+    return this.http.put<any>(this.urlBase + 'login/cerrar-sesion', null); 
   }
 
-  public estaLogeado(){
-    return (this.obtenerUuid());
+  public estaLogeado(): Observable<any> {
+    return this.http.post<any>(this.urlBase + 'login/validar-sesion', null);
   }
 
   obtenerUuid() {

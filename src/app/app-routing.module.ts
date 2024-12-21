@@ -26,6 +26,11 @@ const routes: Routes = [
         loadChildren: () =>
           import('./home/home.module').then((module) => module.HomeModule),
       },
+      {
+        path: 'crear-curso',
+        loadChildren: () =>
+          import('./crear-curso/crear-curso.module').then((module) => module.CrearCursoModule),
+      },
     ],
   },
   { path: '**', redirectTo: 'login' },

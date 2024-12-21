@@ -7,7 +7,6 @@ import { LoginService } from '../../login/data/services/login.service';
 import { RegistroService } from '../data/services/registro.service';
 import { TipoDocumento } from 'src/app/core/interface/tipo-documento.interface';
 import { TipoNotificacion } from 'src/app/core/model/tipo-notificacion';
-import { MatDatepickerIntl } from '@angular/material/datepicker';
 import { Usuario } from 'src/app/core/interface/persona.interface';
 
 @Component({
@@ -37,12 +36,12 @@ export class RegistroComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.redireccionamiento();
-    this.consultarTiposDocumentos();
+    this.redireccionamiento();  
+    this.consultarTiposDocumentos();  
   }
 
   private redireccionamiento() {
-    if (this.loginService.estaLogeado()) {
+    if (this.loginService.obtenerUuid()) {
       this.router.navigateByUrl('app/home');
     }
   }
