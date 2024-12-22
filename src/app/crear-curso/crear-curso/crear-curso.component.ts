@@ -1,12 +1,13 @@
 import { EstadosGlobalesService } from './../../core/services/estados-globales.service';
 import { CrearCursoService } from './../data/services/crear-curso.service';
 import { Router } from '@angular/router';
-import { LoginService } from './../../login/data/services/login.service';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MensajeService } from 'src/app/core/services/mensaje.service';
 import { ValidacionFormularioService } from 'src/app/core/services/validacion-formulario.service';
 import { Categoria } from 'src/app/core/interface/categoria.interface';
+import { tap } from 'rxjs';
+import { TipoNotificacion } from 'src/app/core/model/tipo-notificacion';
 
 @Component({
   selector: 'app-crear-curso',
@@ -17,13 +18,13 @@ export class CrearCursoComponent implements OnInit {
   public formularioRegistroCurso!: FormGroup;
 
   categoriasPadre: Categoria[] = [];
+  subCategoriasPadre: Categoria[] = [];
 
   constructor(
     private router: Router,
     private fb: FormBuilder,
     private validacionFormularioService: ValidacionFormularioService,
     private estadosGlobalesService: EstadosGlobalesService,
-    private loginService: LoginService,
     private mensajeService: MensajeService,
     private crearCursoService: CrearCursoService
   ) {
@@ -31,15 +32,7 @@ export class CrearCursoComponent implements OnInit {
     this.consultarCategoriasPadre();
   }
 
-  ngOnInit(): void {
-    // this.redireccionamiento();
-  }
-
-  private redireccionamiento() {
-    if (this.loginService.obtenerUuid()) {
-      this.router.navigateByUrl('login');
-    }
-  }
+  ngOnInit(): void {}
 
   private consultarCategoriasPadre() {
     this.estadosGlobalesService.setSpinner(true);
@@ -50,12 +43,39 @@ export class CrearCursoComponent implements OnInit {
       },
       error: (err) => {
         this.estadosGlobalesService.setSpinner(false);
-        this.mensajeService.enviarMensaje({
-          tipo: err?.error?.codigo,
-          mensaje: err?.error?.mensaje,
-        });
+        this.mensajeService.openSnackBar(
+          err?.error?.mensaje,
+          err?.error?.codigo
+        );
       },
     });
+  }
+  public seleccionaPadre(value: number) {
+    this.estadosGlobalesService.setSpinner(true);
+    this.subCategoriasPadre = [];
+    this.idCategoriaPadre?.setValue(null);
+    this.crearCursoService
+      .categoriasHijos(value)
+      .pipe(
+        tap((res) => {
+          console.log(res);
+          if (res.respuesta) {
+            const categoria: Categoria[] = res.respuesta;
+            const padreCategoria = categoria.find((cat) => cat.id == value);
+            if (padreCategoria && padreCategoria.subCategorias) {
+              this.subCategoriasPadre = padreCategoria.subCategorias;
+              if (this.subCategoriasPadre.length == 1) {
+                this.idCategoriaPadre?.setValue(this.subCategoriasPadre[0].id);
+              }
+            }
+          }
+        })
+      )
+      .subscribe({
+        complete: () => {
+          this.estadosGlobalesService.setSpinner(false);
+        },
+      });
   }
 
   private cargarFormulario() {
@@ -68,22 +88,51 @@ export class CrearCursoComponent implements OnInit {
 
     this.formularioRegistroCurso = this.fb.group({
       nombre: ['', validacion],
-      apellido: ['', validacion],
-      tipoDocumentoUsuario: [null, Validators.required],
-      identificacion: ['', validacion],
-      correo: ['', validacionEmail],
-      celular: ['', [Validators.required, Validators.pattern('^[3][0-9]{9}$')]],
-      fechaNacimiento: ['', Validators.required],
-      departamento: ['', validacion],
-      ciudad: ['', validacion],
-      direccion: ['', validacion],
-      contrasena: ['', [Validators.required, Validators.minLength(4)]],
-      repetirContrasena: ['', [Validators.required, Validators.minLength(4)]],
+      descripcion: ['', validacion],
+      idCategoriaPadre: [null, Validators.required],
+      idCategoria: [null, Validators.required],
+      valorHora: [
+        null,
+        [
+          Validators.required,
+          Validators.pattern(ValidacionFormularioService.REGEXPS.ONLY_NUMBERS),
+        ],
+      ],
     });
   }
 
+  get idCategoria() {
+    return this.formularioRegistroCurso.get('idCategoria');
+  }
+  get idCategoriaPadre() {
+    return this.formularioRegistroCurso.get('idCategoriaPadre');
+  }
   registrarCurso() {
-    console.log('Curso registrado');
+    if (this.formularioRegistroCurso.invalid) {
+      this.mensajeService.enviarMensaje({
+        mensaje: 'Faltan datos por ingresar',
+        tipo: TipoNotificacion.error,
+      });
+      return;
+    }
+    this.estadosGlobalesService.setSpinner(true);
+    this.crearCursoService
+      .registrar(this.formularioRegistroCurso.value)
+      .pipe(
+        tap((res) => {
+          if (res.respuesta) {
+            this.mensajeService.openSnackBar(res.mensaje, res.codigo);
+          }
+        })
+      )
+      .subscribe({
+        error: () => {
+          this.estadosGlobalesService.setSpinner(false);
+        },
+        complete: () => {
+          this.estadosGlobalesService.setSpinner(false);
+        },
+      });
   }
 
   public revisarRN(controlador: string): string {

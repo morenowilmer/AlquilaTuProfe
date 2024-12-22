@@ -15,7 +15,9 @@ export class CrearCursoService {
   categoriasPadres() {
     return this.http.get<any>(this.urlBase + 'categorias/listar-padres');
   }
-
+  public categoriasHijos(idPadre: number) {
+    return this.http.get<any>(this.urlBase + 'categorias/listar-subcategorias/'+idPadre);
+  }
   registrar(curso: Curso) {
     return this.http.post<any>(this.urlBase + 'cursos/registrar', curso);
   }

@@ -116,6 +116,7 @@ export class LayoutComponent implements OnInit, OnDestroy, AfterViewChecked {
           this.loginService.logout()
           .subscribe({
             next: async (resp) => {
+              console.log("🚀 ~ LayoutComponent ~ next: ~ resp:", resp)
               this.estadosGlobalesService.setSpinner(false);
               this.mensajeService.enviarMensaje({
                 mensaje: resp?.mensaje,
@@ -123,8 +124,8 @@ export class LayoutComponent implements OnInit, OnDestroy, AfterViewChecked {
               });
               localStorage.removeItem('usuarioSesion');
               localStorage.removeItem('token')
-  
-              window.location.reload();
+              this.router.navigateByUrl('login');
+              // window.location.reload();
             },
             error: (err) => {
               this.estadosGlobalesService.setSpinner(false);
@@ -132,6 +133,9 @@ export class LayoutComponent implements OnInit, OnDestroy, AfterViewChecked {
                 mensaje: err?.error?.mensaje,
                 tipo: err?.error?.codigo,
               });
+              localStorage.removeItem('usuarioSesion');
+              localStorage.removeItem('token')
+              this.router.navigateByUrl('login');
             },
           });
         }
